@@ -38,7 +38,7 @@ jobs:
           files: dist/main.exe
           tag_name: v${{ github.run_number }}
           name: Pomodoro Release v${{ github.run_number }}
-          body: "Automated build for Windows - Built on ${{ github.event.head_commit.timestamp }}"
+          body: "Automated Windows build - Run #${{ github.run_number }}"
           draft: false
           prerelease: false
           fail_on_unmatched_files: false

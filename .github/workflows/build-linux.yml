@@ -32,10 +32,9 @@ jobs:
           pip install -r exe_versions/requirements.txt
 
       - name: Build with PyInstaller
-        run: |
-          pyinstaller --onefile --add-data "exe_versions/tomato.png:." exe_versions/main.py
+        run: pyinstaller --onefile --add-data "exe_versions/tomato.png:." exe_versions/main.py
 
-      - name: Create AppImage (optional, fallback to binary)
+      - name: Create Archive
         run: |
           mkdir -p dist/appimage
           cp dist/main dist/appimage/
@@ -48,9 +47,7 @@ jobs:
           files: dist/Pomodoro-v${{ github.run_number }}-linux.tar.gz
           tag_name: v${{ github.run_number }}
           name: Pomodoro Release v${{ github.run_number }}
-          body: |
-            Automated build for Linux
-            Built on: ${{ github.event.head_commit.timestamp }}
+          body: "Automated Linux build - Run #${{ github.run_number }}"
           draft: false
           prerelease: false
           fail_on_unmatched_files: false
