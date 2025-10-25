@@ -24,13 +24,13 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r exe_versions/requirements.txt
+          pip install -r project/exe_versions/requirements.txt
 
       - name: Convert PNG to ICO icon
-        run: python -c "from PIL import Image; img = Image.open('exe_versions/tomato.png'); img = img.convert('RGBA'); img.save('exe_versions/icon.ico'); print('Icon created')"
+        run: python -c "from PIL import Image; img = Image.open('project/exe_versions/tomato.png'); img = img.convert('RGBA'); img.save('project/exe_versions/icon.ico'); print('Icon created')"
 
       - name: Build with PyInstaller
-        run: pyinstaller --onefile --windowed --add-data "exe_versions/tomato.png;." --icon=exe_versions/icon.ico exe_versions/main.py
+        run: pyinstaller --onefile --windowed --add-data "project/exe_versions/tomato.png;." --icon=project/exe_versions/icon.ico project/exe_versions/main.py
 
       - name: Create Release and Upload
         uses: softprops/action-gh-release@v1
@@ -43,6 +43,5 @@ jobs:
           prerelease: false
           fail_on_unmatched_files: false
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
