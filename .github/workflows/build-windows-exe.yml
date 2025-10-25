@@ -38,24 +38,17 @@ print('Icon created successfully')
         run: |
           pyinstaller --onefile --windowed --add-data "exe_versions/tomato.png;." --icon=exe_versions/icon.ico exe_versions/main.py
 
-      - name: Get version and create release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Create Release and Upload
+        uses: softprops/action-gh-release@v1
         with:
+          files: dist/main.exe
           tag_name: v${{ github.run_number }}
-          release_name: Pomodoro Release v${{ github.run_number }}
-          body: Automated Windows EXE build
+          name: Pomodoro Release v${{ github.run_number }}
+          body: |
+            Automated build for Windows
+            Built on: ${{ github.event.head_commit.timestamp }}
           draft: false
           prerelease: false
-
-      - name: Upload to release
-        uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./dist/main.exe
-          asset_name: Pomodoro-v${{ github.run_number }}.exe
-          asset_content_type: application/octet-stream
 

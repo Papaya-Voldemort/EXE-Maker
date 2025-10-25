@@ -5,6 +5,9 @@ on:
     branches: [ main ]
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   build-macos:
     runs-on: macos-latest
@@ -33,12 +36,18 @@ jobs:
           cp -r dist/main.app dist/dmg/
           hdiutil create -volname "Pomodoro" -srcfolder dist/dmg -ov -format UDZO dist/Pomodoro-v${{ github.run_number }}.dmg
 
-      - name: Upload to release
+      - name: Upload to Release
         uses: softprops/action-gh-release@v1
         with:
           files: dist/Pomodoro-v${{ github.run_number }}.dmg
           tag_name: v${{ github.run_number }}
-          generate_release_notes: true
+          name: Pomodoro Release v${{ github.run_number }}
+          body: |
+            Automated build for macOS
+            Built on: ${{ github.event.head_commit.timestamp }}
+          draft: false
+          prerelease: false
+          fail_on_unmatched_files: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
