@@ -27,19 +27,10 @@ jobs:
           pip install -r exe_versions/requirements.txt
 
       - name: Convert PNG to ICO icon
-        run: |
-          python -c "
-from PIL import Image
-import os
-img = Image.open('exe_versions/tomato.png')
-img = img.convert('RGBA')
-img.save('exe_versions/icon.ico')
-print('Icon created successfully')
-          "
+        run: python -c "from PIL import Image; img = Image.open('exe_versions/tomato.png'); img = img.convert('RGBA'); img.save('exe_versions/icon.ico'); print('Icon created')"
 
       - name: Build with PyInstaller
-        run: |
-          pyinstaller --onefile --windowed --add-data "exe_versions/tomato.png;." --icon=exe_versions/icon.ico exe_versions/main.py
+        run: pyinstaller --onefile --windowed --add-data "exe_versions/tomato.png;." --icon=exe_versions/icon.ico exe_versions/main.py
 
       - name: Create Release and Upload
         uses: softprops/action-gh-release@v1
@@ -47,12 +38,11 @@ print('Icon created successfully')
           files: dist/main.exe
           tag_name: v${{ github.run_number }}
           name: Pomodoro Release v${{ github.run_number }}
-          body: |
-            Automated build for Windows
-            Built on: ${{ github.event.head_commit.timestamp }}
+          body: "Automated build for Windows - Built on ${{ github.event.head_commit.timestamp }}"
           draft: false
           prerelease: false
           fail_on_unmatched_files: false
         env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
